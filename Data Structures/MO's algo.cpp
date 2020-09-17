@@ -27,8 +27,8 @@ int main()
         int l=A[i].l,r=A[i].r;
         while(curL<l)_rem(curL++);
         while(curL>l)_add(--curL);
-	    while(curR<r)_add(++curR);
-	    while(curR>r)_rem(curR--);
+	while(curR<r)_add(++curR);
+	while(curR>r)_rem(curR--);
         rs[A[i].ps]=cnt;
     }
 
