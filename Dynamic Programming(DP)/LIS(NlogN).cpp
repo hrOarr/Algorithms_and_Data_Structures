@@ -4,7 +4,7 @@ void _lis()
     for(int i=1;i<=n;i++)
     {
         st.insert(A[i]);
-        auto it=upper_bound(A[i]);
+        auto it=st.upper_bound(A[i]);
         if(it!=st.end())st.erase(A[i]);
     }
     cout<<st.size()<<"\n";
