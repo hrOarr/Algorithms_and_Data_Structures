@@ -1,6 +1,89 @@
 #include "bits/stdc++.h"
 using namespace std;
 typedef long long int ll;
+const ll N=1e5+5,inf=1e9+7,mod=998244353;
+int vs[N];
+ll bigmod(ll b,ll p,ll m)
+{
+    ll rt=1;
+    while(p){
+        if(p&1){
+            rt=(rt*b)%m;
+        }
+        b=(b*b)%m;
+        p>>=1;
+    }
+    return rt;
+}
+ll _hash(string s,ll md)
+{
+    ll rt=0;
+    for(int i=0;i<s.size();i++){
+        rt=(rt*31LL+(s[i]-'a'+1))%md;
+    }
+    return rt;
+}
+int main()
+{
+    ios_base::sync_with_stdio(0);cin.tie(0);
+    int n,k;cin>>n>>k;ll pw[2*n*k+2],pw2[2*n*k+1];
+    pw[0]=pw2[0]=1;ll Hash[2*n*k+2],Hash2[2*n*k+2];Hash[0]=Hash2[0]=0;
+    for(int i=1;i<=2*n*k;i++){
+        pw[i]=(pw[i-1]*31LL)%inf;
+        pw2[i]=(pw2[i-1]*31LL)%mod;
+    }
+    string s;cin>>s;
+    s=s+s;s='#'+s;
+    for(int i=1;i<=2*n*k;i++){
+        Hash[i]=(Hash[i-1]*31LL+(s[i]-'a'+1))%inf;
+        Hash2[i]=(Hash2[i-1]*31LL+(s[i]-'a'+1))%mod;
+    }
+    int g;cin>>g;map<pair<ll,ll>,ll>hashes;
+    for(int i=1;i<=g;i++){
+        string x;cin>>x;
+        hashes[make_pair(_hash(x,inf),_hash(x,mod))]=i;
+    }
+    int rs[n+1];
+    for(int i=1;i<=k;i++){
+        bool f=1;int id=0;
+        for(int j=i;j<i+n*k;j+=k){
+            ll cur=(Hash[j+k-1]-(Hash[j-1]*pw[k])%inf+inf)%inf;
+            ll cur2=(Hash2[j+k-1]-(Hash2[j-1]*pw2[k])%mod+mod)%mod;
+            if(hashes.count(make_pair(cur,cur2))==0){
+                f=0;break;
+            }
+            int idx=hashes[make_pair(cur,cur2)];
+            if(vs[idx]){
+                f=0;break;
+            }
+            rs[++id]=idx;
+            vs[idx]++;
+            //cout<<id<<"*\n";
+            if(id==n)break;
+        }
+        if(f){
+            cout<<"YES\n";
+            for(int i=1;i<=n;i++){
+                cout<<rs[i]<<" ";
+            }
+            cout<<"\n";
+            exit(0);
+        }
+        else{
+            memset(vs,0,sizeof vs);
+        }
+    }
+    cout<<"NO\n";
+
+
+
+    return 0;
+}
+
+////
+#include "bits/stdc++.h"
+using namespace std;
+typedef long long int ll;
 const int N = 1e9+7;
 unordered_map<ll,bool>vis,vis2;
 ll Bigmod( ll b,ll p,ll m )
