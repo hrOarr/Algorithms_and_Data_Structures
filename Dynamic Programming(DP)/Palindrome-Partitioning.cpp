@@ -43,3 +43,35 @@ int dfs(string s,int l,int r)
 	dp[tm]=rt;
 	return dp[tm];
 }
+
+// optimized
+memset(P,0,sizeof P);
+for(int i=0;i<n;i++){
+    P[i][i]=1;
+}
+for(int i=2;i<=n;i++){
+    for(int j=0;j<n-i+1;j++){
+	int k=j+i-1;
+	if(i==2){
+	    P[j][k]=(s[j]==s[k]);
+	}
+	else{
+	    P[j][k]=(s[j]==s[k] && P[j+1][k-1]);
+	}
+    }
+}
+
+int c[n+1];
+for(int i=0;i<n;i++){
+    if(P[0][i]){
+	c[i]=0;
+    }
+    else{
+	c[i]=1e5;
+	for(int j=0;j<i;j++){
+	    if(P[j+1][i] && 1+c[j]<c[i]){
+		c[i]=c[j]+1;
+	    }
+	}
+    }
+}
